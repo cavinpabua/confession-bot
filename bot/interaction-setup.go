@@ -6,7 +6,13 @@ import (
 	"github.com/bwmarrin/discordgo"
 )
 
-func onInteractionCreate(s *discordgo.Session, i *discordgo.InteractionCreate) {
+func onInteractionClick(s *discordgo.Session, i *discordgo.InteractionCreate) {
+	if i.MessageComponentData().CustomID == "submit_confession" {
+		confessor(s, i)
+	}
+}
+
+func onInteractionModal(s *discordgo.Session, i *discordgo.InteractionCreate) {
 	if i.ModalSubmitData().CustomID == "confession_form_"+i.Interaction.Member.User.ID {
 		name := i.ModalSubmitData().Components[0].(*discordgo.ActionsRow).Components[0].(*discordgo.TextInput).Value
 		confession := i.ModalSubmitData().Components[1].(*discordgo.ActionsRow).Components[0].(*discordgo.TextInput).Value
@@ -23,7 +29,20 @@ func onInteractionCreate(s *discordgo.Session, i *discordgo.InteractionCreate) {
 				},
 			},
 		}
-		_, err := s.ChannelMessageSendEmbed(i.ChannelID, embed)
+		_, err := s.ChannelMessageSendComplex(i.ChannelID, &discordgo.MessageSend{
+			Embed: embed,
+			Components: []discordgo.MessageComponent{
+				discordgo.ActionsRow{
+					Components: []discordgo.MessageComponent{
+						discordgo.Button{
+							Label:    "Submit Confession",
+							Style:    discordgo.PrimaryButton,
+							CustomID: "submit_confession",
+						},
+					},
+				},
+			},
+		})
 		if err != nil {
 			log.Printf("Error sending embed: %v", err)
 		}
