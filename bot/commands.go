@@ -45,7 +45,7 @@ func confessor(s *discordgo.Session, i *discordgo.InteractionCreate) {
 							CustomID:    "confession",
 							Label:       "Your Confession",
 							Style:       discordgo.TextInputParagraph,
-							Placeholder: "Enter your conession here...",
+							Placeholder: "Enter your confession here...",
 							Required:    true,
 						},
 					},
