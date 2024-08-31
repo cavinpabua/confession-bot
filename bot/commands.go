@@ -43,7 +43,7 @@ func confessor(s *discordgo.Session, i *discordgo.InteractionCreate) {
 					Components: []discordgo.MessageComponent{
 						discordgo.TextInput{
 							CustomID:    "confession",
-							Label:       "Your Conession",
+							Label:       "Your Confession",
 							Style:       discordgo.TextInputParagraph,
 							Placeholder: "Enter your conession here...",
 							Required:    true,
