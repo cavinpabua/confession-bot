@@ -22,11 +22,27 @@ var Commands = []*discordgo.ApplicationCommand{
 }
 
 func confessor(s *discordgo.Session, i *discordgo.InteractionCreate) {
+	channel, err := s.State.Channel(i.ChannelID)
+	if err != nil {
+		log.Printf("Error fetching channel: %v", err)
+		return
+	}
+
+	isDM := channel.Type == discordgo.ChannelTypeDM
+
+	// Construct the custom ID based on the context
+	var customID string
+	if isDM {
+		customID = "confession_form_dm_" + i.Interaction.User.ID // Use User ID for DMs
+	} else {
+		customID = "confession_form_" + i.Interaction.Member.User.ID // Use Member ID for guild
+	}
+	
 	s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
 		Type: discordgo.InteractionResponseModal,
 		Data: &discordgo.InteractionResponseData{
 			Title:    "Confession Form",
-			CustomID: "confession_form_" + i.Interaction.Member.User.ID,
+			CustomID: customID,
 			Components: []discordgo.MessageComponent{
 				discordgo.ActionsRow{
 					Components: []discordgo.MessageComponent{
