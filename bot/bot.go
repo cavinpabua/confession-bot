@@ -16,6 +16,9 @@ func Run() {
 	discord, err := discordgo.New("Bot " + BotToken)
 	checkNilErr(err)
 
+	discord.Identify.Intents = discordgo.IntentsGuilds | discordgo.IntentsGuildMessages | discordgo.IntentsDirectMessages
+
+
 	discord.AddHandler(func(s *discordgo.Session, r *discordgo.Ready) {
 		log.Println("Bot is now connected and ready")
 		registerCommands(discord)
