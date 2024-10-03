@@ -27,7 +27,7 @@ func onInteractionModal(s *discordgo.Session, i *discordgo.InteractionCreate) {
 		customID = "confession_form_" + i.Interaction.Member.User.ID 
 	}
 	
-	if i.ModalSubmitData().CustomID == "confession_form_"+customID {
+	if i.ModalSubmitData().CustomID == customID {
 		name := i.ModalSubmitData().Components[0].(*discordgo.ActionsRow).Components[0].(*discordgo.TextInput).Value
 		confession := i.ModalSubmitData().Components[1].(*discordgo.ActionsRow).Components[0].(*discordgo.TextInput).Value
 
