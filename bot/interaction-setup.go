@@ -29,7 +29,13 @@ func onInteractionModal(s *discordgo.Session, i *discordgo.InteractionCreate) {
 				},
 			},
 		}
-		_, err := s.ChannelMessageSendComplex(i.ChannelID, &discordgo.MessageSend{
+		var receipientId = ""
+		if i.ChannelID == "" {
+			receipientId = i.User.ID
+		} else {
+			receipientId = i.ChannelID
+		}
+		_, err := s.ChannelMessageSendComplex(receipientId, &discordgo.MessageSend{
 			Embed: embed,
 			Components: []discordgo.MessageComponent{
 				discordgo.ActionsRow{
