@@ -13,7 +13,7 @@ func onInteractionClick(s *discordgo.Session, i *discordgo.InteractionCreate) {
 }
 
 func onInteractionModal(s *discordgo.Session, i *discordgo.InteractionCreate) {
-	channel, err := s.State.Channel(i.ChannelID)
+	channel, err := s.Channel(i.ChannelID)
 	if err != nil {
 		log.Printf("Error fetching channel: %v", err)
 		return
