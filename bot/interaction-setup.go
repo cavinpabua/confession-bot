@@ -20,7 +20,6 @@ func onInteractionModal(s *discordgo.Session, i *discordgo.InteractionCreate) {
 	}
 	
 	isDM := channel.Type == discordgo.ChannelTypeDM
-	var userId = ""
 	var customID string
 	if isDM {
 		customID = "confession_form_dm_" + i.Interaction.User.ID 
