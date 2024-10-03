@@ -13,7 +13,22 @@ func onInteractionClick(s *discordgo.Session, i *discordgo.InteractionCreate) {
 }
 
 func onInteractionModal(s *discordgo.Session, i *discordgo.InteractionCreate) {
-	if i.ModalSubmitData().CustomID == "confession_form_"+i.Interaction.Member.User.ID {
+	channel, err := s.State.Channel(i.ChannelID)
+	if err != nil {
+		log.Printf("Error fetching channel: %v", err)
+		return
+	}
+	
+	isDM := channel.Type == discordgo.ChannelTypeDM
+	var userId = ""
+	var customID string
+	if isDM {
+		customID = "confession_form_dm_" + i.Interaction.User.ID 
+	} else {
+		customID = "confession_form_" + i.Interaction.Member.User.ID 
+	}
+	
+	if i.ModalSubmitData().CustomID == "confession_form_"+customID {
 		name := i.ModalSubmitData().Components[0].(*discordgo.ActionsRow).Components[0].(*discordgo.TextInput).Value
 		confession := i.ModalSubmitData().Components[1].(*discordgo.ActionsRow).Components[0].(*discordgo.TextInput).Value
 
